@@ -1,2 +1,105 @@
 # gradient_fuzzer
-Gradient fuzzing for probabilistic programming
+Gradient fuzzing for tensorflow, inspired by [Dave's fuzzer](https://da-data.blogspot.com/2017/01/finding-bugs-in-tensorflow-with.html). The goal is to automatically build computation graphs and test random input values to detect errors in gradients.
+
+## TODO:
+Scale this up, think of heuristic so that if gradient error is large, decrease finite difference epsilon, rerun many times, only throw exception if most finite difference checks fail.
+
+## Running
+Fuzz single argument ops' gradients, their gradients of gradients, all permutations, and all gradients of gradients of their permutations:
+```python gradient_fuzzer.py > job.log```
+Example output:
+```
+➜  gradient_fuzzer git:(master) ✗ python gradient_fuzzer.py
+Testing gradient of y = _identity(abs(x))
+Testing gradient of y = _identity(acos(x))
+Testing gradient of y = _identity(asin(x))
+Testing gradient of y = _identity(atan(x))
+Testing gradient of y = _identity(ceil(x))
+Testing gradient of y = _identity(conj(x))
+Testing gradient of y = _identity(cos(x))
+Testing gradient of y = _identity(digamma(x))
+Testing gradient of y = _identity(erf(x))
+Testing gradient of y = _identity(erfc(x))
+Testing gradient of y = _identity(exp(x))
+Testing gradient of y = _identity(floor(x))
+Testing gradient of y = _identity(is_finite(x))
+Testing gradient of y = _identity(is_inf(x))
+Testing gradient of y = _identity(is_nan(x))
+Testing gradient of y = _identity(lgamma(x))
+Testing gradient of y = _identity(log(x))
+Testing gradient of y = _identity(log1p(x))
+Testing gradient of y = _identity(neg(x))
+Testing gradient of y = _identity(negative(x))
+Testing gradient of y = _identity(reciprocal(x))
+Testing gradient of y = _identity(rint(x))
+Testing gradient of y = _identity(round(x))
+Testing gradient of y = _identity(rsqrt(x))
+Testing gradient of y = _identity(sigmoid(x))
+Testing gradient of y = _identity(sign(x))
+Testing gradient of y = _identity(sin(x))
+Testing gradient of y = _identity(sqrt(x))
+Testing gradient of y = _identity(square(x))
+Testing gradient of y = _identity(tan(x))
+Testing gradient of y = _identity(tanh(x))
+Testing gradient of y = _identity(to_bfloat16(x))
+Testing gradient of y = _identity(to_double(x))
+Testing gradient of y = _identity(to_float(x))
+Testing gradient of y = _identity(to_int32(x))
+Testing gradient of y = _identity(to_int64(x))
+Testing gradient of y = _gradient(abs(x))
+Testing gradient of y = _gradient(acos(x))
+Testing gradient of y = _gradient(asin(x))
+Testing gradient of y = _gradient(atan(x))
+Testing gradient of y = _gradient(conj(x))
+Testing gradient of y = _gradient(cos(x))
+Testing gradient of y = _gradient(digamma(x))
+For y = _gradient(digamma(x)) point 2.154e+33, gradient error was 1.418e+10 at tolerance 1.000e-01
+Testing gradient of y = _gradient(erf(x))
+Testing gradient of y = _gradient(erfc(x))
+Testing gradient of y = _gradient(exp(x))
+Testing gradient of y = _gradient(floor(x))
+Testing gradient of y = _gradient(lgamma(x))
+For y = _gradient(lgamma(x)) point 1.000e+100, gradient error was 2.526e-01 at tolerance 1.000e-01
+Testing gradient of y = _gradient(log(x))
+Testing gradient of y = _gradient(log1p(x))
+Testing gradient of y = _gradient(neg(x))
+Testing gradient of y = _gradient(negative(x))
+Testing gradient of y = _gradient(reciprocal(x))
+For y = _gradient(reciprocal(x)) point 1.668e-78, gradient error was 4.095e+02 at tolerance 1.000e-01
+For y = _gradient(reciprocal(x)) point 4.642e-34, gradient error was 3.383e+02 at tolerance 1.000e-01
+Testing gradient of y = _gradient(rint(x))
+Testing gradient of y = _gradient(rsqrt(x))
+For y = _gradient(rsqrt(x)) point 2.783e-56, gradient error was 1.113e+02 at tolerance 1.000e-01
+For y = _gradient(rsqrt(x)) point 2.154e+33, gradient error was 6.080e+04 at tolerance 1.000e-01
+Testing gradient of y = _gradient(sigmoid(x))
+Testing gradient of y = _gradient(sign(x))
+Testing gradient of y = _gradient(sin(x))
+Testing gradient of y = _gradient(sqrt(x))
+Testing gradient of y = _gradient(square(x))
+Testing gradient of y = _gradient(tan(x))
+Testing gradient of y = _gradient(tanh(x))
+Testing gradient of y = _gradient(to_double(x))
+Testing gradient of y = _gradient(to_float(x))
+Testing gradient of y = _gradient(to_int32(x))
+Testing gradient of y = _gradient(to_int64(x))
+Testing gradient of y = _chain(abs(acos(x))
+Testing gradient of y = _chain(abs(asin(x))
+Testing gradient of y = _chain(abs(atan(x))
+Testing gradient of y = _chain(abs(ceil(x))
+Testing gradient of y = _chain(abs(conj(x))
+Testing gradient of y = _chain(abs(cos(x))
+Testing gradient of y = _chain(abs(digamma(x))
+Testing gradient of y = _chain(abs(erf(x))
+Testing gradient of y = _chain(abs(erfc(x))
+Testing gradient of y = _chain(abs(exp(x))
+Testing gradient of y = _chain(abs(floor(x))
+Testing gradient of y = _chain(abs(lgamma(x))
+Testing gradient of y = _chain(abs(log(x))
+Testing gradient of y = _chain(abs(log1p(x))
+Testing gradient of y = _chain(abs(neg(x))
+Testing gradient of y = _chain(abs(negative(x))
+Testing gradient of y = _chain(abs(reciprocal(x))
+Testing gradient of y = _chain(abs(rint(x))
+Testing gradient of y = _chain(abs(round(x))
+Testing gradient of y = _chain(abs(rsqrt(x))
+```
